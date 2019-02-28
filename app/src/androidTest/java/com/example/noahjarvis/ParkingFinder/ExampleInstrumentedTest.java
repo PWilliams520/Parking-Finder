@@ -1,4 +1,4 @@
-package com.example.noahjarvis.test;
+package com.example.noahjarvis.ParkingFinder;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
