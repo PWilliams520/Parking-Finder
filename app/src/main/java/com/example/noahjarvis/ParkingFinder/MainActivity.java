@@ -15,8 +15,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    String msg = "Test Phone : ";
-    ArrayList<ParkingLot> testArray = new ArrayList<>();
+    private ArrayList<ParkingLot> lotArray = new ArrayList<>();    //ArrayList of Lots
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,11 +28,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        //fills ArrayList of lots
         for (int i = 0; i < 100; i++) {
-            testArray.add(new ParkingLot(i));
+            lotArray.add(new ParkingLot(i));
         }
+
+        //Converts ArrayList to ListView
         setContentView(R.layout.activity_main);
-        ArrayAdapter lotText = new ArrayAdapter<ParkingLot>(this,R.layout.lot_text,testArray);
+        ArrayAdapter lotText = new ArrayAdapter<ParkingLot>(this,R.layout.lot_text,lotArray);
         ListView lotList = (ListView) findViewById(R.id.lot_list);
         lotList.setAdapter(lotText);
     }
