@@ -35,6 +35,22 @@ public class ParkingLot {
         return description;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public int getCurrent() {
+        return current;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
     @Override
     public String toString() {
         // Lot A

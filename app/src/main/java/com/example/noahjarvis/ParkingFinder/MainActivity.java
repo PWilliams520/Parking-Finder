@@ -1,15 +1,13 @@
 package com.example.noahjarvis.ParkingFinder;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.LinearLayout;
+
 
 import java.util.ArrayList;
 
@@ -33,11 +31,14 @@ public class MainActivity extends AppCompatActivity {
             lotArray.add(new ParkingLot(i));
         }
 
-        //Converts ArrayList to ListView
         setContentView(R.layout.activity_main);
-        ArrayAdapter lotText = new ArrayAdapter<ParkingLot>(this,R.layout.lot_text,lotArray);
-        ListView lotList = (ListView) findViewById(R.id.lot_list);
-        lotList.setAdapter(lotText);
+        //ArrayAdapter lotText = new ArrayAdapter<ParkingLot>(this,R.layout.lot_text,lotArray);
+        RecyclerView lotList = (RecyclerView) findViewById(R.id.lot_list);
+        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(this);
+        lotList.setLayoutManager(layoutManager);
+        RecyclerView.Adapter adapter = new RecycleViewLotAdapter(lotArray);
+        lotList.setAdapter(adapter);
+
     }
 
     /** Called when the activity has become visible. */
