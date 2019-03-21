@@ -31,12 +31,12 @@ public class MainActivity extends AppCompatActivity {
             lotArray.add(new ParkingLot(i));
         }
 
+        //Creates recycle view and converts ArrayList of Lots to RecyleView
         setContentView(R.layout.activity_main);
-        //ArrayAdapter lotText = new ArrayAdapter<ParkingLot>(this,R.layout.lot_text,lotArray);
         RecyclerView lotList = (RecyclerView) findViewById(R.id.lot_list);
         RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(this);
         lotList.setLayoutManager(layoutManager);
-        RecyclerView.Adapter adapter = new RecycleViewLotAdapter(lotArray);
+        RecyclerView.Adapter adapter = new RecycleViewLotAdapter(this,lotArray);
         lotList.setAdapter(adapter);
 
     }

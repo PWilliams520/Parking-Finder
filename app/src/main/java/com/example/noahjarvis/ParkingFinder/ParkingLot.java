@@ -27,7 +27,7 @@ public class ParkingLot {
     }
 
     //returns current capacity as a percentage
-    private int getPercent(){
+    public int getPercent(){
         return (int)(((double)current/capacity)*100);
     }
 
@@ -53,8 +53,6 @@ public class ParkingLot {
 
     @Override
     public String toString() {
-        // Lot A
-        // X/Y z%
-        return name + "\n" + current + "/" + capacity + "\t\t" + getPercent() + "%";
+        return current + "/" + capacity;
     }
 }
