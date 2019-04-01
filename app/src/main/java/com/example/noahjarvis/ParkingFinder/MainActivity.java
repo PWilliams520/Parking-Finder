@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
             // viewHolder.getItemViewType();
             // viewHolder.itemView;
             ParkingLot lot = lotArray.get(position);
-            Toast.makeText(MainActivity.this, "You Clicked: " + lot.getDescription(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "You Clicked: " + lot.getName(), Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         RecycleViewLotAdapter adapter = new RecycleViewLotAdapter(this,lotArray);
         lotList.setAdapter(adapter);
         //TODO: Step 1 of 4: Create and set OnItemClickListener to the adapter.
-        //adapter.setClickListener(onItemClickListener);
+        adapter.setOnItemClickListener(onItemClickListener);
         }
 
 
@@ -83,4 +83,5 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
     }
+
 }

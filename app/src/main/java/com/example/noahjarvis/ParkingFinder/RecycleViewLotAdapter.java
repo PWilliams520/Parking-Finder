@@ -12,8 +12,8 @@ import java.util.ArrayList;
 public class RecycleViewLotAdapter extends RecyclerView.Adapter<RecycleViewLotAdapter.LotViewHolder>{
     private ArrayList<ParkingLot> lots;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
-    //private View.OnClickListener mClickListener;
+    //private ItemClickListener mClickListener;
+    private View.OnClickListener mClickListener;
 
     public RecycleViewLotAdapter(Context context, ArrayList<ParkingLot> lots){
         super();
@@ -60,8 +60,12 @@ public class RecycleViewLotAdapter extends RecyclerView.Adapter<RecycleViewLotAd
         return lots.size();
     }
 
+    public void setOnItemClickListener(View.OnClickListener itemClickListener) {
+        mClickListener = itemClickListener;
+    }
 
-    public class LotViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+    public class LotViewHolder extends RecyclerView.ViewHolder {
         TextView lotTitle;      //Name of Lot
         TextView lotText;       //Capacity of lot
         TextView lotPercent;    //Percent of spaces used
@@ -71,12 +75,8 @@ public class RecycleViewLotAdapter extends RecyclerView.Adapter<RecycleViewLotAd
             lotTitle = itemView.findViewById(R.id.lot_title);
             lotText  = itemView.findViewById(R.id.lot_text);
             lotPercent = itemView.findViewById(R.id.lot_percent);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            itemView.setTag(this);
+            itemView.setOnClickListener(mClickListener);
         }
     }
     ParkingLot getItem(int id) {
@@ -84,13 +84,13 @@ public class RecycleViewLotAdapter extends RecyclerView.Adapter<RecycleViewLotAd
     }
 
     // allows clicks events to be caught
-    void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
-    // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
+//    void setClickListener(ItemClickListener itemClickListener) {
+//        this.mClickListener = itemClickListener;
+//    }
+//
+//    // parent activity will implement this method to respond to click events
+//    public interface ItemClickListener {
+//        void onItemClick(View view, int position);
+//    }
 
 }
