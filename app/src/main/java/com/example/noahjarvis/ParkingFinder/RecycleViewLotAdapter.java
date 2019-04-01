@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class RecycleViewLotAdapter extends RecyclerView.Adapter<RecycleViewLotAdapter.LotViewHolder>{
     private ArrayList<ParkingLot> lots;
     private LayoutInflater mInflater;
-    //private ItemClickListener mClickListener;
     private View.OnClickListener mClickListener;
 
     public RecycleViewLotAdapter(Context context, ArrayList<ParkingLot> lots){
@@ -79,18 +78,4 @@ public class RecycleViewLotAdapter extends RecyclerView.Adapter<RecycleViewLotAd
             itemView.setOnClickListener(mClickListener);
         }
     }
-    ParkingLot getItem(int id) {
-        return lots.get(id);
-    }
-
-    // allows clicks events to be caught
-//    void setClickListener(ItemClickListener itemClickListener) {
-//        this.mClickListener = itemClickListener;
-//    }
-//
-//    // parent activity will implement this method to respond to click events
-//    public interface ItemClickListener {
-//        void onItemClick(View view, int position);
-//    }
-
 }

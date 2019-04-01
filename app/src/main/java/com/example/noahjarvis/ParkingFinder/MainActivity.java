@@ -20,13 +20,8 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            //TODO: Step 4 of 4: Finally call getTag() on the view.
-            // This viewHolder will have all required values.
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
             int position = viewHolder.getAdapterPosition();
-            // viewHolder.getItemId();
-            // viewHolder.getItemViewType();
-            // viewHolder.itemView;
             ParkingLot lot = lotArray.get(position);
             Toast.makeText(MainActivity.this, "You Clicked: " + lot.getName(), Toast.LENGTH_SHORT).show();
         }
@@ -43,12 +38,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //Creates recycle view and converts ArrayList of Lots to RecyleView
-        RecyclerView lotList = (RecyclerView) findViewById(R.id.lot_list);
+        RecyclerView lotList = findViewById(R.id.lot_list);
         RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(this);
         lotList.setLayoutManager(layoutManager);
         RecycleViewLotAdapter adapter = new RecycleViewLotAdapter(this,lotArray);
         lotList.setAdapter(adapter);
-        //TODO: Step 1 of 4: Create and set OnItemClickListener to the adapter.
         adapter.setOnItemClickListener(onItemClickListener);
         }
 
