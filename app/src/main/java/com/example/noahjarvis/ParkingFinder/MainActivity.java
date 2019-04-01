@@ -5,8 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -15,10 +17,39 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<ParkingLot> lotArray = new ArrayList<>();    //ArrayList of Lots
 
+    private View.OnClickListener onItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            //TODO: Step 4 of 4: Finally call getTag() on the view.
+            // This viewHolder will have all required values.
+            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
+            int position = viewHolder.getAdapterPosition();
+            // viewHolder.getItemId();
+            // viewHolder.getItemViewType();
+            // viewHolder.itemView;
+            ParkingLot lot = lotArray.get(position);
+            Toast.makeText(MainActivity.this, "You Clicked: " + lot.getDescription(), Toast.LENGTH_SHORT).show();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.example.noahjarvis.ParkingFinder.R.layout.activity_main);
+
+        //fills ArrayList of lots
+        for (int i = 0; i < 100; i++) {
+            lotArray.add(new ParkingLot(i));
+        }
+
+        //Creates recycle view and converts ArrayList of Lots to RecyleView
+        RecyclerView lotList = (RecyclerView) findViewById(R.id.lot_list);
+        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(this);
+        lotList.setLayoutManager(layoutManager);
+        RecycleViewLotAdapter adapter = new RecycleViewLotAdapter(this,lotArray);
+        lotList.setAdapter(adapter);
+        //TODO: Step 1 of 4: Create and set OnItemClickListener to the adapter.
+        //adapter.setClickListener(onItemClickListener);
         }
 
 
@@ -26,18 +57,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //fills ArrayList of lots
-        for (int i = 0; i < 100; i++) {
-            lotArray.add(new ParkingLot(i));
-        }
-
-        //Creates recycle view and converts ArrayList of Lots to RecyleView
-        setContentView(R.layout.activity_main);
-        RecyclerView lotList = (RecyclerView) findViewById(R.id.lot_list);
-        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(this);
-        lotList.setLayoutManager(layoutManager);
-        RecyclerView.Adapter adapter = new RecycleViewLotAdapter(this,lotArray);
-        lotList.setAdapter(adapter);
 
     }
 

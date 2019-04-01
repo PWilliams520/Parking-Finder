@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "415750766877",
+    "firebase_url": "https://parkingfinder-cad69.firebaseio.com",
+    "project_id": "parkingfinder-cad69",
+    "storage_bucket": "parkingfinder-cad69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415750766877:android:28c6900d438b77a0",
+        "android_client_info": {
+          "package_name": "com.example.noahjarvis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415750766877-ejugh8be5vejhd0n7t2ou5kufdsaouvk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQnp7z4VoKItlSA5R0j0gptE0bKeGNMsc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415750766877:android:337779caae21298a",
+        "android_client_info": {
+          "package_name": "com.example.noahjarvis.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415750766877-ce8v9325j52189qol390ae8k5ap23t7m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.noahjarvis.test",
+            "certificate_hash": "b684c15bf21abcbe8b3d239144fc0e2a711e5b43"
+          }
+        },
+        {
+          "client_id": "415750766877-ejugh8be5vejhd0n7t2ou5kufdsaouvk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQnp7z4VoKItlSA5R0j0gptE0bKeGNMsc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415750766877-ejugh8be5vejhd0n7t2ou5kufdsaouvk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

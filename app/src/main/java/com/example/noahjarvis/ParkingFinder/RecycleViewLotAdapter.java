@@ -13,6 +13,7 @@ public class RecycleViewLotAdapter extends RecyclerView.Adapter<RecycleViewLotAd
     private ArrayList<ParkingLot> lots;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    //private View.OnClickListener mClickListener;
 
     public RecycleViewLotAdapter(Context context, ArrayList<ParkingLot> lots){
         super();
