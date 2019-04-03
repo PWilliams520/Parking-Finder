@@ -1,5 +1,6 @@
 package com.example.noahjarvis.ParkingFinder;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
             int position = viewHolder.getAdapterPosition();
             ParkingLot lot = lotArray.get(position);
             Toast.makeText(MainActivity.this, "You Clicked: " + lot.getName(), Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+            intent.putExtra("Current Lot",lot);
+            startActivity(intent);
         }
     };
 

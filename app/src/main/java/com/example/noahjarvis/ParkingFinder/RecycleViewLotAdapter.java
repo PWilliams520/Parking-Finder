@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -37,18 +38,24 @@ public class RecycleViewLotAdapter extends RecyclerView.Adapter<RecycleViewLotAd
         holder.lotPercent.setText(percent);
 
         //sets color of even indices to cyan
+        int ColorOne = 0xFFAFEEEE; //Pale Turquiose
+        int ColorTwo = 0xFF00FFFF; //Light Cyan
+//        int ColorOne = 0xFFD9D9D9; //Light Gray
+//        int ColorTwo = 0xFFFFFFFF; //White
+
+
         if(position%2 == 0) {
-            holder.lotTitle.setBackgroundColor(0xFF00FFFF);
-            holder.lotText.setBackgroundColor(0xFF00FFFF);
-            holder.lotPercent.setBackgroundColor(0xFF00FFFF);
+            holder.lotTitle.setBackgroundColor(ColorOne);
+            holder.lotText.setBackgroundColor(ColorOne);
+            holder.lotPercent.setBackgroundColor(ColorOne);
 
         }
 
         //sets color of odd indices to aquamarine
         else{
-            holder.lotTitle.setBackgroundColor(0xFF7FFFD4);
-            holder.lotText.setBackgroundColor(0xFF7FFFD4);
-            holder.lotPercent.setBackgroundColor(0xFF7FFFD4);
+            holder.lotTitle.setBackgroundColor(ColorTwo);
+            holder.lotText.setBackgroundColor(ColorTwo);
+            holder.lotPercent.setBackgroundColor(ColorTwo);
         }
     }
 

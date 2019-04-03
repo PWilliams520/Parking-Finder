@@ -1,5 +1,8 @@
 package com.example.noahjarvis.ParkingFinder;
-public class ParkingLot {
+
+import java.io.Serializable;
+
+public class ParkingLot implements Serializable {
     enum Type{
         FACULTY,GENERAL,VISITOR
     }
