@@ -37,25 +37,67 @@ public class RecycleViewLotAdapter extends RecyclerView.Adapter<RecycleViewLotAd
         String percent = lot.getPercent() + "% of spots taken";
         holder.lotPercent.setText(percent);
 
-        //sets color of even indices to cyan
+        //
+        ////sets color of even indices to cyan
         int ColorOne = 0xFFAFEEEE; //Pale Turquiose
         int ColorTwo = 0xFF00FFFF; //Light Cyan
-//        int ColorOne = 0xFFD9D9D9; //Light Gray
-//        int ColorTwo = 0xFFFFFFFF; //White
+        ////        int ColorOne = 0xFFD9D9D9; //Light Gray
+        ////        int ColorTwo = 0xFFFFFFFF; //White
+        //
+        //
+        //if(position%2 == 0) {
+        //holder.lotTitle.setBackgroundColor(ColorOne);
+        //holder.lotText.setBackgroundColor(ColorOne);
+        //holder.lotPercent.setBackgroundColor(ColorOne);
+        //
+        //}
+        //
+        ////sets color of odd indices to aquamarine
+        //else{
+        //holder.lotTitle.setBackgroundColor(ColorTwo);
+        //holder.lotText.setBackgroundColor(ColorTwo);
+        //holder.lotPercent.setBackgroundColor(ColorTwo);
+        //}
+        //
+        int EmptyColor = 0x75C6EFCE;   //Light Green
+        int MedColor = 0x75FFEB9C;   //Light Yellow
+        int FullColor = 0x75FFC7CE;   //Light Red
 
+        int EmptyText = 0xFF006100;   //Dark Green
+        int MedText = 0xFF9C5700;   //Dark Yellow
+        int FullText = 0xFF9C0006;   //Dark Red
 
-        if(position%2 == 0) {
-            holder.lotTitle.setBackgroundColor(ColorOne);
-            holder.lotText.setBackgroundColor(ColorOne);
-            holder.lotPercent.setBackgroundColor(ColorOne);
+        //sets color based on capacity
 
-        }
+        if (lot.getPercent() < 33) {
+            holder.lotTitle.setBackgroundColor(EmptyColor);
+            holder.lotText.setBackgroundColor(EmptyColor);
+            holder.lotPercent.setBackgroundColor(EmptyColor);
 
-        //sets color of odd indices to aquamarine
-        else{
+            holder.lotTitle.setTextColor(EmptyText);
+            holder.lotText.setTextColor(EmptyText);
+            holder.lotPercent.setTextColor(EmptyText);
+
+        } else if (lot.getPercent() < 67 && lot.getPercent() >= 33) {
+            holder.lotTitle.setBackgroundColor(MedColor);
+            holder.lotText.setBackgroundColor(MedColor);
+            holder.lotPercent.setBackgroundColor(MedColor);
+
+            holder.lotTitle.setTextColor(MedText);
+            holder.lotText.setTextColor(MedText);
+            holder.lotPercent.setTextColor(MedText);
+        } else {
             holder.lotTitle.setBackgroundColor(ColorTwo);
             holder.lotText.setBackgroundColor(ColorTwo);
             holder.lotPercent.setBackgroundColor(ColorTwo);
+            holder.lotTitle.setBackgroundColor(FullColor);
+            holder.lotText.setBackgroundColor(FullColor);
+            holder.lotPercent.setBackgroundColor(FullColor);
+
+            holder.lotTitle.setTextColor(FullText);
+            holder.lotText.setTextColor(FullText);
+            holder.lotPercent.setTextColor(FullText);
+
         }
     }
 

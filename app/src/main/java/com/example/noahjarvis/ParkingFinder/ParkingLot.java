@@ -12,12 +12,17 @@ public class ParkingLot implements Serializable {
     private int     capacity;   //Total Capacity
     private int     current;    //Current Capacity
     private Type    type;       //type of lot
+    private double  latitude;   //latitude of lot
+    private double  longitude;  //longitude of lot
 
 
     public ParkingLot(int name){
-        this.name = "Lot " + name;
-        capacity = 100 + (int)(Math.random()*100);
-        current = (int)(Math.random()*100);
+        this.name   = "Lot " + name;
+        description = "Sample Text the will describe lot location";
+        capacity    = 100 + (int)(Math.random()*100);
+        current     = (int)(Math.random()*100);
+        latitude    =  41.403133;
+        longitude   =  2.1737241;
     }
 
     public ParkingLot(){
@@ -53,6 +58,10 @@ public class ParkingLot implements Serializable {
     public Type getType() {
         return type;
     }
+
+    public double getLatitude() { return latitude;}
+
+    public double getLongitude() { return  longitude;}
 
     @Override
     public String toString() {
