@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:isScrollContainer="true"
-    tools:context="com.example.noahjarvis.ParkingFinder.DetailsActivity">
+    tools:context="com.example.noahjarvis.ParkingFinder.DetailsActivity"
+    android:background="#4000FFFF">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/details_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <LinearLayout
             android:layout_width="fill_parent"
