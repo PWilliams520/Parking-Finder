@@ -23,9 +23,25 @@ public class ParkingLot implements Serializable {
         current     = (int)(Math.random()*100);
         latitude    =  41.403133;
         longitude   =  2.1737241;
+        int temp = (int)(Math.random()*3);
+        if(temp == 0){
+            this.type = Type.FACULTY;
+        }
+        else if(temp == 1){
+            this.type = Type.GENERAL;
+        }
+        else{
+            this.type = Type.VISITOR;
+        }
     }
 
-    public ParkingLot(){
+    public ParkingLot(String name, String description, int capacity, Type type, double latitude, double longitude){
+        this.name = name;
+        this.description = description;
+        this.capacity = capacity;
+        this.type = type;
+        this.latitude = latitude;
+        this.longitude = longitude;
         updateLot();
     }
 

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
             int position = viewHolder.getAdapterPosition();
             ParkingLot lot = lotArray.get(position);
-            Toast.makeText(MainActivity.this, "You Clicked: " + lot.getName(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MainActivity.this, "You Clicked: " + lot.getName(), Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
             intent.putExtra("Current Lot",lot);
@@ -99,8 +100,9 @@ public class MainActivity extends AppCompatActivity {
         mQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                System.out.println("This is what we are reading from Firebase");
-                System.out.println(dataSnapshot.getValue(ParkingLotModel.class));
+
+                Log.d("FIREBASE","This is what we are reading from Firebase");
+                Log.d("FIREBASE",dataSnapshot.getValue(ParkingLotModel.class).toString());
             }
 
             @Override

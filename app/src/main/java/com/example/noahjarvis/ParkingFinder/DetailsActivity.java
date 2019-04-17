@@ -42,6 +42,18 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
         TextView description = findViewById(R.id.lot_descript);
         description.setText(lot.getDescription());
 
+        TextView type = findViewById(R.id.lot_type);
+        String typeText = "Unknown Lot Description";
+        if(lot.getType() == ParkingLot.Type.FACULTY){
+            typeText = "Faculty, Student Lot";
+        }
+        else if(lot.getType() == ParkingLot.Type.VISITOR){
+            typeText = "Visitor Lot";
+        }
+        else if(lot.getType() == ParkingLot.Type.GENERAL) {
+            typeText = "General Use Lot";
+        }
+        type.setText(typeText);
         setTitle(lot.getName());
 
 
