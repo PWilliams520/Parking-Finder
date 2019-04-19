@@ -47,6 +47,8 @@ public class ParkingLot implements Serializable {
 
     //updates information for lot
     public void updateLot(){
+        //TODO update information from firebase
+        current = (int)(Math.random()*capacity);
 
     }
 
