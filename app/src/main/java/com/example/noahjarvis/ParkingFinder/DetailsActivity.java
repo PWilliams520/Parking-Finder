@@ -37,13 +37,15 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
 
         TextView percentText = findViewById(R.id.map_percent);
         String text = lot.toString() + " spots taken";
+        if(lot.getCurrent() < 0)
+            text = "lot capacity unknown";
         percentText.setText(text);
 
         TextView description = findViewById(R.id.lot_descript);
         description.setText(lot.getDescription());
 
         TextView type = findViewById(R.id.lot_type);
-        String typeText = "Unknown Lot Description";
+        String typeText = "Unknown Lot Restrictions";
         if(lot.getType() == ParkingLot.Type.FACULTY){
             typeText = "Faculty, Student Lot";
         }
@@ -70,6 +72,6 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
         // Add a marker in Sydney and move the camera
         LatLng lotLocation = new LatLng(lot.getLatitude(), lot.getLongitude());
         lotMap.addMarker(new MarkerOptions().position(lotLocation).title(lot.getName()));
-        lotMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lotLocation,19));
+        lotMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lotLocation,18));
     }
 }

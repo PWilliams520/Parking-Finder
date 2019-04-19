@@ -15,6 +15,7 @@ public class RecycleViewLotAdapter extends RecyclerView.Adapter<RecycleViewLotAd
     private LayoutInflater mInflater;
     private View.OnClickListener mClickListener;
 
+
     public RecycleViewLotAdapter(Context context, ArrayList<ParkingLot> lots){
         super();
         mInflater = LayoutInflater.from(context);
@@ -37,28 +38,13 @@ public class RecycleViewLotAdapter extends RecyclerView.Adapter<RecycleViewLotAd
         String percent = lot.getPercent() + "% of spots taken";
         holder.lotPercent.setText(percent);
 
-        //
+
+
+
         ////sets color of even indices to cyan
         int ColorOne = 0xFFAFEEEE; //Pale Turquiose
         int ColorTwo = 0xFF00FFFF; //Light Cyan
-        ////        int ColorOne = 0xFFD9D9D9; //Light Gray
-        ////        int ColorTwo = 0xFFFFFFFF; //White
-        //
-        //
-        //if(position%2 == 0) {
-        //holder.lotTitle.setBackgroundColor(ColorOne);
-        //holder.lotText.setBackgroundColor(ColorOne);
-        //holder.lotPercent.setBackgroundColor(ColorOne);
-        //
-        //}
-        //
-        ////sets color of odd indices to aquamarine
-        //else{
-        //holder.lotTitle.setBackgroundColor(ColorTwo);
-        //holder.lotText.setBackgroundColor(ColorTwo);
-        //holder.lotPercent.setBackgroundColor(ColorTwo);
-        //}
-        //
+
         int EmptyColor = 0x75C6EFCE;   //Light Green
         int MedColor = 0x75FFEB9C;   //Light Yellow
         int FullColor = 0x75FFC7CE;   //Light Red
@@ -69,7 +55,22 @@ public class RecycleViewLotAdapter extends RecyclerView.Adapter<RecycleViewLotAd
 
         //sets color based on capacity
 
-        if (lot.getPercent() < 33) {
+        //Color if capacity unknown
+        if(lot.getCurrent() < 0){
+            String capacity = "?/" + lot.getCapacity();
+            holder.lotText.setText(capacity);
+            percent = "lot capacity unknown";
+            holder.lotPercent.setText(percent);
+            holder.lotTitle.setBackgroundColor(0xFFE0E0E0);
+            holder.lotText.setBackgroundColor(0xFFE0E0E0);
+            holder.lotPercent.setBackgroundColor(0xFFE0E0E0);
+            holder.lotTitle.setTextColor(0xFF777777);
+            holder.lotText.setTextColor(0xFF777777);
+            holder.lotPercent.setTextColor(0xFF777777);
+
+        }
+        //color if mostly empty
+        else if (lot.getPercent() < 33) {
             holder.lotTitle.setBackgroundColor(EmptyColor);
             holder.lotText.setBackgroundColor(EmptyColor);
             holder.lotPercent.setBackgroundColor(EmptyColor);
@@ -78,7 +79,9 @@ public class RecycleViewLotAdapter extends RecyclerView.Adapter<RecycleViewLotAd
             holder.lotText.setTextColor(EmptyText);
             holder.lotPercent.setTextColor(EmptyText);
 
-        } else if (lot.getPercent() < 67 && lot.getPercent() >= 33) {
+        }
+        //color if partially filled
+        else if (lot.getPercent() < 67 && lot.getPercent() >= 33) {
             holder.lotTitle.setBackgroundColor(MedColor);
             holder.lotText.setBackgroundColor(MedColor);
             holder.lotPercent.setBackgroundColor(MedColor);
@@ -86,7 +89,9 @@ public class RecycleViewLotAdapter extends RecyclerView.Adapter<RecycleViewLotAd
             holder.lotTitle.setTextColor(MedText);
             holder.lotText.setTextColor(MedText);
             holder.lotPercent.setTextColor(MedText);
-        } else {
+        }
+        //color if full or almost full
+        else {
             holder.lotTitle.setBackgroundColor(ColorTwo);
             holder.lotText.setBackgroundColor(ColorTwo);
             holder.lotPercent.setBackgroundColor(ColorTwo);
@@ -99,6 +104,8 @@ public class RecycleViewLotAdapter extends RecyclerView.Adapter<RecycleViewLotAd
             holder.lotPercent.setTextColor(FullText);
 
         }
+
+
     }
 
 

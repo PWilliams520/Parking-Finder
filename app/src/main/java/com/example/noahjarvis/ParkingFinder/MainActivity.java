@@ -3,16 +3,13 @@ package com.example.noahjarvis.ParkingFinder;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
-import com.google.firebase.*;
+import android.widget.TextView;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,18 +17,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.opencsv.CSVReader;
 
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.security.AccessController.getContext;
 //TODO automatically update lot capacity
 public class MainActivity extends AppCompatActivity {
 
@@ -56,9 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.example.noahjarvis.ParkingFinder.R.layout.activity_main);
-//        String fileName = this.getApplicationInfo().dataDir + File.separatorChar + "lots.csv";
         String fileName = "lots.csv";
-//        String fileName = "/Users/noahjarvis/School/WakeForest/CSC331/ParkingFinder/Parking-Finder/app/src/main/assets/lots.csv";
         try {
             AssetManager manager = getApplicationContext().getAssets();
             CSVReader reader = new CSVReader(new InputStreamReader(manager.open(fileName)));
@@ -69,13 +57,10 @@ public class MainActivity extends AppCompatActivity {
 
         }
         catch(IOException e){
-            Log.d("FILE IO" , "could not open file: " + fileName);
-            e.printStackTrace();
+            TextView errorText = findViewById(R.id.error);
+            errorText.setText("Lots cannot be accessed at this time\n\nTry again later");
         }
-//        //fills ArrayList of lots
-//        for (int i = 0; i < 100; i++) {
-//            lotArray.add(new ParkingLot(i));
-//        }
+
 
         //Creates recycle view and converts ArrayList of Lots to RecyleView
         RecyclerView lotList = findViewById(R.id.lot_list);
@@ -156,9 +141,6 @@ public class MainActivity extends AppCompatActivity {
     private void parseLotString(String[] data){
         if(data.length != 6)
             return;
-        for(int i = 0;i < data.length;i++){
-            Log.d("LOT DATA",data[i]);
-        }
 
         int capacity = Integer.parseInt(data[2]);
         ParkingLot.Type type;
