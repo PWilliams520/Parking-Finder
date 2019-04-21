@@ -3,6 +3,7 @@ package com.example.noahjarvis.ParkingFinder;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +15,9 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.annotations.Nullable;
 import com.opencsv.CSVReader;
 
 import java.io.IOException;
@@ -26,6 +29,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<ParkingLot> lotArray = new ArrayList<>();    //ArrayList of Lots
+    private ArrayList<ParkingLotModel> specificParkingLot = new ArrayList<>();
+    private ArrayList<ArrayList<ParkingLotModel>> parkingLot = new ArrayList<>();
     private DatabaseReference mDatabase;
 
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
@@ -34,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
             int position = viewHolder.getAdapterPosition();
             ParkingLot lot = lotArray.get(position);
-//            Toast.makeText(MainActivity.this, "You Clicked: " + lot.getName(), Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
             intent.putExtra("Current Lot",lot);
@@ -47,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(com.example.noahjarvis.ParkingFinder.R.layout.activity_main);
         String fileName = "lots.csv";
+
+        String parkA = "parking-lot-A";
+        String parkB = "parking-lot-B";
+        String parkC = "parking-lot-C";
+        String parkE = "parking-lot-E";
+
         try {
             AssetManager manager = getApplicationContext().getAssets();
             CSVReader reader = new CSVReader(new InputStreamReader(manager.open(fileName)));
@@ -61,14 +71,41 @@ public class MainActivity extends AppCompatActivity {
             errorText.setText("Lots cannot be accessed at this time\n\nTry again later");
         }
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        //Creates recycle view and converts ArrayList of Lots to RecyleView
+        //Creates recycle view and converts ArrayList of Lots to RecycleView
         RecyclerView lotList = findViewById(R.id.lot_list);
         RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(this);
         lotList.setLayoutManager(layoutManager);
         RecycleViewLotAdapter adapter = new RecycleViewLotAdapter(this,lotArray);
         lotList.setAdapter(adapter);
         adapter.setOnItemClickListener(onItemClickListener);
+
+        retrieveFromFirebase(parkA);
+        parkingLot.add(specificParkingLot);
+        specificParkingLot.clear();
+
+        /*
+         * Uncomment following code to load up every bit of information about the parking lots
+         * Take into account that loading everything significantly slows down the app
+         * This could be done with an async thread, but I don't really think we need that much data
+         * At the end, all info should end up in the ArrayList parkingLot, which will be formed
+         * by objects of the class ParkingLotModel.
+         */
+
+        /*
+        retrieveFromFirebase(parkB);
+        parkingLot.add(specificParkingLot);
+        specificParkingLot.clear();
+
+        retrieveFromFirebase(parkC);
+        parkingLot.add(specificParkingLot);
+        specificParkingLot.clear();
+
+        retrieveFromFirebase(parkE);
+        parkingLot.add(specificParkingLot);
+        specificParkingLot.clear();
+        */
         }
 
 
@@ -103,40 +140,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    // Retrieves all Song data from Firebase
-    private void getSongsFromFirebase()
-    {
-        Query mQuery = mDatabase.child("0").orderByChild("A");
-        mQuery.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                Log.d("FIREBASE","This is what we are reading from Firebase");
-                Log.d("FIREBASE",dataSnapshot.getValue(ParkingLotModel.class).toString());
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
     //Parses string from CSV, creates parking lot and adds to lotArray
     private void parseLotString(String[] data){
         if(data.length != 6)
@@ -162,4 +165,40 @@ public class MainActivity extends AppCompatActivity {
         lotArray.add(new ParkingLot(data[0],data[1],capacity,type,lat,lon));
     }
 
+    private void retrieveFromFirebase(String parkingLotToRetrieve) {
+
+        Query mQuery = mDatabase.child("parking-lots").child(parkingLotToRetrieve);
+        mQuery.addChildEventListener(new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                ParkingLotModel parkingLotModel = dataSnapshot.getValue(ParkingLotModel.class);
+                specificParkingLot.add(parkingLotModel);
+
+                /*for (int i = 0; i < specificParkingLot.size(); i++)
+                    Log.d("PARKING_LOG_TAG", specificParkingLot.get(i).getTime_stamp());*/
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+        });
+    }
 }

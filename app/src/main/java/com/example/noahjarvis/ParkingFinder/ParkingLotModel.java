@@ -2,49 +2,49 @@ package com.example.noahjarvis.ParkingFinder;
 
 public class ParkingLotModel {
 
-    private String A;
-    private String B;
-    private String C;
-    private String D;
-    private String E;
+    private String day;
+    private String leaving;
+    private String lot_name;
+    private String observation;
+    private String time_stamp;
 
-    public String getA() {
-        return A;
+    public String getDay() {
+        return day;
     }
 
-    public void setA(String a) {
-        A = a;
+    public void setDay(String day) {
+        this.day = day;
     }
 
-    public String getB() {
-        return B;
+    public String getLeaving() {
+        return leaving;
     }
 
-    public void setB(String b) {
-        B = b;
+    public void setLeaving(String leaving) {
+        this.leaving = leaving;
     }
 
-    public String getC() {
-        return C;
+    public String getLot_name() {
+        return lot_name;
     }
 
-    public void setC(String c) {
-        C = c;
+    public void setLot_name(String lot_name) {
+        this.lot_name = lot_name;
     }
 
-    public String getD() {
-        return D;
+    public String getObservation() {
+        return observation;
     }
 
-    public void setD(String d) {
-        D = d;
+    public void setObservation(String observation) {
+        this.observation = observation;
     }
 
-    public String getE() {
-        return E;
+    public String getTime_stamp() {
+        return time_stamp;
     }
 
-    public void setE(String e) {
-        E = e;
+    public void setTime_stamp(String time_stamp) {
+        this.time_stamp = time_stamp;
     }
 }
