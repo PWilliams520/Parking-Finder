@@ -47,11 +47,14 @@ public class ParkingLot implements Serializable {
 
     //updates information for lot
     //set value to -1 if lot cannot be updated
-    public void updateLot(){
+    public void updateLot(Long current){
         //TODO update information from firebase
-        current = (int)(Math.random()*capacity) -5;
+        //current = (int)(Math.random()*capacity) -5;
+        this.current = current.intValue();
 
     }
+
+    public void updateLot(){current = -1;}
 
     //returns current capacity as a percentage
     public int getPercent(){
