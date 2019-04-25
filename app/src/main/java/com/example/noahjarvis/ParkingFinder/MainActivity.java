@@ -3,12 +3,14 @@ package com.example.noahjarvis.ParkingFinder;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -22,6 +24,7 @@ import com.opencsv.CSVReader;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<ParkingLot> lotArray = new ArrayList<>();    //ArrayList of Lots
     private ArrayList<ParkingCapacity> specificParkingLot = new ArrayList<>();
-    private ArrayList<ArrayList<ParkingCapacity>> parkingLot = new ArrayList<>();
     private DatabaseReference mDatabase;
+    private Handler mHandler;
 
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
         @Override
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             ParkingLot lot = lotArray.get(position);
 
             Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-            intent.putExtra("Current Lot",lot);
+            intent.putExtra("Current Lot", (Serializable) lot);
             startActivity(intent);
         }
     };
@@ -50,15 +53,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        retrieveFromFirebase();
 
         String fileName = "lots.csv";
 
-//        String parkA = "parking-lot-A";
-//        String parkB = "parking-lot-B";
-//        String parkC = "parking-lot-C";
-//        String parkE = "parking-lot-E";
 
         try {
             AssetManager manager = getApplicationContext().getAssets();
@@ -73,44 +72,8 @@ public class MainActivity extends AppCompatActivity {
             TextView errorText = findViewById(R.id.error);
             errorText.setText("Lots cannot be accessed at this time\n\nTry again later");
         }
-
-
-
-
-        parkingLot.add(specificParkingLot);
         updateAllLots();
-        specificParkingLot.clear();
 
-        /*
-         * Uncomment following code to load up every bit of information about the parking lots
-         * Take into account that loading everything significantly slows down the app
-         * This could be done with an async thread, but I don't really think we need that much data
-         * At the end, all info should end up in the ArrayList parkingLot, which will be formed
-         * by objects of the class ParkingLotModel.
-         */
-
-        /*
-        retrieveFromFirebase(parkB);
-        parkingLot.add(specificParkingLot);
-        specificParkingLot.clear();
-
-        retrieveFromFirebase(parkC);
-        parkingLot.add(specificParkingLot);
-        specificParkingLot.clear();
-
-        retrieveFromFirebase(parkE);
-        parkingLot.add(specificParkingLot);
-        specificParkingLot.clear();
-        */
-
-    }
-
-
-    /** Called when the activity is about to become visible. */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        updateAllLots();
         setContentView(com.example.noahjarvis.ParkingFinder.R.layout.activity_main);
 
         //Creates recycle view and converts ArrayList of Lots to RecycleView
@@ -120,6 +83,39 @@ public class MainActivity extends AppCompatActivity {
         RecycleViewLotAdapter adapter = new RecycleViewLotAdapter(this,lotArray);
         lotList.setAdapter(adapter);
         adapter.setOnItemClickListener(onItemClickListener);
+        this.mHandler = new Handler();
+
+        this.mHandler.postDelayed(m_Runnable,1);
+
+
+
+    }
+    private final Runnable m_Runnable = new Runnable()
+    {
+        public void run()
+
+        {
+            updateAllLots();
+
+            setContentView(com.example.noahjarvis.ParkingFinder.R.layout.activity_main);
+
+            //Creates recycle view and converts ArrayList of Lots to RecycleView
+            RecyclerView lotList = findViewById(R.id.lot_list);
+            RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(MainActivity.this);
+            lotList.setLayoutManager(layoutManager);
+            RecycleViewLotAdapter adapter = new RecycleViewLotAdapter(MainActivity.this,lotArray);
+            lotList.setAdapter(adapter);
+            adapter.setOnItemClickListener(onItemClickListener);
+        }
+
+    };//runnable
+
+
+    /** Called when the activity is about to become visible. */
+    @Override
+    protected void onStart() {
+        super.onStart();
+
 
     }
 
@@ -127,7 +123,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updateAllLots();
+//        setContentView(com.example.noahjarvis.ParkingFinder.R.layout.activity_main);
+//        RecyclerView lotList = findViewById(R.id.lot_list);
+//        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(this);
+//        lotList.setLayoutManager(layoutManager);
+//        RecycleViewLotAdapter adapter = new RecycleViewLotAdapter(this,lotArray);
+//        lotList.setAdapter(adapter);
+//        adapter.setOnItemClickListener(onItemClickListener);
+
     }
 
     /** Called when another activity is taking focus. */
@@ -174,15 +177,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateAllLots(){
+        retrieveFromFirebase();
         if(lotArray.size() != 0 && specificParkingLot.size() !=0) {
             for (int i = 0; i < lotArray.size(); i++) {
                 lotArray.get(i).updateLot(specificParkingLot.get(i).getCurrent());
             }
         }
+        specificParkingLot.clear();
     }
 
     private void retrieveFromFirebase() {
-
         Query mQuery = mDatabase.child("Lots");
         mQuery.addChildEventListener(new ChildEventListener() {
 
@@ -191,8 +195,8 @@ public class MainActivity extends AppCompatActivity {
                 ParkingCapacity parkingLotModel = dataSnapshot.getValue(ParkingCapacity.class);
                 specificParkingLot.add(parkingLotModel);
 
-//                for (int i = 0; i < specificParkingLot.size(); i++)
-//                    Log.d("PARKING_LOG_TAG", specificParkingLot.get(i).getName());
+                for (int i = 0; i < specificParkingLot.size(); i++)
+                    Log.d("PARKING_LOG_TAG", specificParkingLot.get(i).getName());
             }
 
             @Override

@@ -1,8 +1,11 @@
 package com.example.noahjarvis.ParkingFinder;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
-public class ParkingLot implements Serializable {
+public class ParkingLot implements Serializable, Parcelable {
     enum Type{
         FACULTY,GENERAL,VISITOR
     }
@@ -43,6 +46,16 @@ public class ParkingLot implements Serializable {
         this.latitude = latitude;
         this.longitude = longitude;
         updateLot();
+    }
+
+    public ParkingLot(Parcel in){
+        this.name = in.readString();
+        this.description = in.readString();
+        this.capacity = in.readInt();
+        this.current = in.readInt();
+        this.type = Type.valueOf(in.readString());
+        this.latitude = in.readDouble();
+        this.longitude = in.readDouble();
     }
 
     //updates information for lot
@@ -89,4 +102,38 @@ public class ParkingLot implements Serializable {
     public String toString() {
         return current + "/" + capacity;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel parcel, int i) {
+        //    private String  name;       //Name of the lot
+        //    private String  description;//Long description of Lot
+        //    private int     capacity;   //Total Capacity
+        //    private int     current;    //Current Capacity
+        //    private Type    type;       //type of lot
+        //    private double  latitude;   //latitude of lot
+        //    private double  longitude;  //longitude of lot
+        parcel.writeString(name);
+        parcel.writeString(description);
+        parcel.writeInt(capacity);
+        parcel.writeInt(current);
+        parcel.writeString(type.name());
+        parcel.writeDouble(latitude);
+        parcel.writeDouble(longitude);
+    }
+
+    public static final Creator<ParkingLot> CREATOR = new Creator<ParkingLot>() {
+        @Override
+        public ParkingLot createFromParcel(Parcel in) {
+            return new ParkingLot(in);
+        }
+
+        @Override
+        public ParkingLot[] newArray(int size) {
+            return new ParkingLot[size];
+        }
+    };
 }
