@@ -38,10 +38,11 @@ public class ParkingLot implements Serializable, Parcelable {
         }
     }
 
-    public ParkingLot(String name, String description, int capacity, Type type, double latitude, double longitude){
+    public ParkingLot(String name, String description, int capacity,int current, Type type, double latitude, double longitude){
         this.name = name;
         this.description = description;
         this.capacity = capacity;
+        this.current = current;
         this.type = type;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -98,6 +99,26 @@ public class ParkingLot implements Serializable, Parcelable {
 
     public double getLongitude() { return  longitude;}
 
+    public String[] writeString(){
+        //Name,Description,Capacity,Current,Type,Latitude,Longitude
+        String[] out  = new String[7];
+        out[0] = name;
+        out[1] = description;
+        out[2] = "" + capacity;
+        out[3] = "" + current;
+        out[4] = "";
+        out[5] = "" + latitude;
+        out[6] = "" + longitude;
+        if(type == Type.VISITOR)
+            out[4] = "V";
+        else if(type == Type.FACULTY)
+            out[4] = "FS";
+
+        else if(type == Type.GENERAL)
+            out[4] = "G";
+        return out;
+    }
+
     @Override
     public String toString() {
         return current + "/" + capacity;
@@ -109,13 +130,6 @@ public class ParkingLot implements Serializable, Parcelable {
     }
 
     public void writeToParcel(Parcel parcel, int i) {
-        //    private String  name;       //Name of the lot
-        //    private String  description;//Long description of Lot
-        //    private int     capacity;   //Total Capacity
-        //    private int     current;    //Current Capacity
-        //    private Type    type;       //type of lot
-        //    private double  latitude;   //latitude of lot
-        //    private double  longitude;  //longitude of lot
         parcel.writeString(name);
         parcel.writeString(description);
         parcel.writeInt(capacity);

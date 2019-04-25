@@ -21,10 +21,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.annotations.Nullable;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<ParkingCapacity> specificParkingLot = new ArrayList<>();
     private DatabaseReference mDatabase;
     private Handler mHandler;
+    private String fileName = "lots.csv";
+    static boolean isInit = true;
+
 
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
         @Override
@@ -56,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        String fileName = "lots.csv";
 
 
         try {
@@ -83,9 +92,15 @@ public class MainActivity extends AppCompatActivity {
         RecycleViewLotAdapter adapter = new RecycleViewLotAdapter(this,lotArray);
         lotList.setAdapter(adapter);
         adapter.setOnItemClickListener(onItemClickListener);
-        this.mHandler = new Handler();
 
-        this.mHandler.postDelayed(m_Runnable,1);
+        this.mHandler = new Handler();
+        this.mHandler.postDelayed(m_Runnable, 100);
+
+        if(isInit) {
+            isInit = false;
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
 
 
 
@@ -106,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
             RecycleViewLotAdapter adapter = new RecycleViewLotAdapter(MainActivity.this,lotArray);
             lotList.setAdapter(adapter);
             adapter.setOnItemClickListener(onItemClickListener);
+            mHandler = new Handler();
+            mHandler.postDelayed(m_Runnable, 100);
         }
 
     };//runnable
@@ -123,6 +140,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+
+
 //        setContentView(com.example.noahjarvis.ParkingFinder.R.layout.activity_main);
 //        RecyclerView lotList = findViewById(R.id.lot_list);
 //        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(this);
@@ -153,12 +173,13 @@ public class MainActivity extends AppCompatActivity {
 
     //Parses string from CSV, creates parking lot and adds to lotArray
     private void parseLotString(String[] data){
-        if(data.length != 6)
+        if(data.length != 7)
             return;
 
         int capacity = Integer.parseInt(data[2]);
+        int current = Integer.parseInt(data[3]);
         ParkingLot.Type type;
-        switch (data[3]){
+        switch (data[4]){
             case "FS":
                 type = ParkingLot.Type.FACULTY;
                 break;
@@ -171,9 +192,12 @@ public class MainActivity extends AppCompatActivity {
             default:
                 type = null;
         }
-        double lat = Double.parseDouble(data[4]);
-        double lon = Double.parseDouble(data[5]);
-        lotArray.add(new ParkingLot(data[0],data[1],capacity,type,lat,lon));
+        double lat = Double.parseDouble(data[5]);
+        double lon = Double.parseDouble(data[6]);
+        lotArray.add(new ParkingLot(data[0],data[1],capacity,current,type,lat,lon));
+        ParkingLot temp = lotArray.get(lotArray.size()-1);
+        String out = temp.getName() + temp.getDescription() + temp.getCurrent() + temp.getCapacity() + temp.getLatitude() + temp.getLongitude();
+        Log.d("LOTS",out);
     }
 
     private void updateAllLots(){
@@ -184,6 +208,21 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         specificParkingLot.clear();
+        try {
+            AssetManager manager = getApplicationContext().getAssets();
+            Writer writer = new BufferedWriter(new FileWriter(fileName));
+            CSVWriter csvWriter = new CSVWriter(writer,
+                    CSVWriter.DEFAULT_SEPARATOR,
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+            String[] header = {"Name","Description","Capacity","Current","Type","Latitude","Longitude"};
+            csvWriter.writeNext(header);
+            for(int i = 1; i < lotArray.size();i++){
+                csvWriter.writeNext(lotArray.get(i).writeString());
+            }
+
+        }catch (IOException e){}
     }
 
     private void retrieveFromFirebase() {
