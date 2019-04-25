@@ -84,7 +84,9 @@ public class MainActivity extends AppCompatActivity {
         updateAllLots();
 
         setContentView(com.example.noahjarvis.ParkingFinder.R.layout.activity_main);
-
+        try {
+            Thread.sleep(1000);
+        }catch (InterruptedException e){}
         //Creates recycle view and converts ArrayList of Lots to RecycleView
         RecyclerView lotList = findViewById(R.id.lot_list);
         RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(this);
@@ -122,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             lotList.setAdapter(adapter);
             adapter.setOnItemClickListener(onItemClickListener);
             mHandler = new Handler();
-            mHandler.postDelayed(m_Runnable, 100);
+            mHandler.postDelayed(m_Runnable, 1000);
         }
 
     };//runnable
